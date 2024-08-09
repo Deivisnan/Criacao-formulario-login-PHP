@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css"> <!-- Inclua o arquivo CSS -->
+    <script>
+        // Função para exibir mensagens de pop-up
+        function showMessage(message, type) {
+            alert(message); // Usando `alert` para simplificar, você pode usar bibliotecas de notificação para uma experiência mais rica
+        }
+
+        // Função para lidar com o envio do formulário
+        function handleSubmit(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+            
+            var formData = new FormData(document.querySelector('form'));
+            fetch('../php/login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showMessage('Login bem-sucedido!', 'success');
+                    window.location.href = 'tela_inicial.php'; // Redireciona para a tela inicial
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Ocorreu um erro. Por favor, tente novamente.', 'error');
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form onsubmit="handleSubmit(event)" class="form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
+            </div>
+            <button type="submit" class="submit-btn">Entrar</button>
+            <button type="button" class="voltar-main-btn" onclick="location.href='meu_formulario.html';">Voltar</button>
+        </form>
+    </div>
+    <script src="../JavaScript/login.js"></script> <!-- Inclusão do arquivo JavaScript -->
+</body>
+</html>
